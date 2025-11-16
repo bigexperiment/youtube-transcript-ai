@@ -1,0 +1,19 @@
+{
+  "name": "YouTube Transcript AI",
+  "short_name": "YT Transcript AI",
+  "description": "AI-powered YouTube video transcript summarization tool",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    }
+  ]
+}
