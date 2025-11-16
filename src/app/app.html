@@ -120,20 +120,35 @@
 
     <!-- Results Section -->
     <div class="results-section" *ngIf="transcriptData || generatingSummary || summary">
+      <!-- Summary Section -->
       <div class="summary-section" *ngIf="transcriptData || generatingSummary || summary">
         <div class="summary-header">
           <div class="headline-row">
             <h2 *ngIf="headline" class="headline">{{ headline }}</h2>
-            <button 
-              *ngIf="isSpeechAvailable() && !generatingSummary" 
-              class="speech-btn"
-              (click)="toggleSpeech()"
-              [title]="isSpeaking && !isPaused ? 'Pause reading' : isPaused ? 'Resume reading' : 'Read aloud'"
-            >
-              <span *ngIf="isSpeaking && !isPaused" class="speaking-icon">🔊</span>
-              <span *ngIf="isPaused" class="paused-icon">⏸️</span>
-              <span *ngIf="!isSpeaking && !isPaused" class="play-icon">🔈</span>
-            </button>
+            <div class="action-buttons">
+              <button
+                *ngIf="isSpeechAvailable() && !generatingSummary"
+                class="action-btn speech-btn"
+                (click)="toggleSpeech()"
+                [title]="isSpeaking && !isPaused ? 'Pause reading' : isPaused ? 'Resume reading' : 'Read aloud'"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path *ngIf="!isSpeaking && !isPaused" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" fill="currentColor"/>
+                  <path *ngIf="isSpeaking && !isPaused" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="currentColor"/>
+                  <path *ngIf="isPaused" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
+                </svg>
+              </button>
+              <button
+                *ngIf="summary && !generatingSummary"
+                class="action-btn copy-btn"
+                (click)="copySummary()"
+                title="Copy summary"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="summary-meta">
             <span class="style-badge">{{ summaryStyle === 'essay' ? 'Essay' : summaryStyle === 'bullets' ? 'Bullets' : 'Timestamp' }}</span>
@@ -152,15 +167,46 @@
           <span *ngIf="!generatingSummary && !summary && transcriptData">No summary generated yet.</span>
         </div>
       </div>
+
+      <!-- Transcript Section -->
+      <div class="transcript-section" *ngIf="transcriptData?.transcript">
+        <div class="transcript-header">
+          <h3>Full Transcript</h3>
+          <button
+            class="action-btn copy-btn"
+            (click)="copyTranscript()"
+            title="Copy transcript"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+            </svg>
+            <span class="btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="transcript-content">
+          <div class="transcript-item" *ngFor="let item of transcriptData.transcript">
+            <span class="time">{{ item.startTimeText }}</span>
+            <span class="text">{{ item.text }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
   <!-- Settings Component -->
-  <app-settings 
+  <app-settings
     [isOpen]="showSettings"
     (close)="closeSettings()"
     (apiKeyUpdated)="onApiKeyUpdated()"
   ></app-settings>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" [class.show]="showToast">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+    </svg>
+    <span>{{ toastMessage }}</span>
+  </div>
 </div>
 
 <router-outlet />

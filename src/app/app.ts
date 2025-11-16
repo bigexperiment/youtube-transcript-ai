@@ -35,6 +35,8 @@ export class App implements OnInit, OnDestroy {
   isPaused: boolean = false;
   private speechSynthesis: SpeechSynthesis | null = null;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
+  showToast: boolean = false;
+  toastMessage: string = '';
 
   constructor(
     private api: Api,
@@ -407,5 +409,53 @@ export class App implements OnInit, OnDestroy {
    */
   isSpeechAvailable(): boolean {
     return 'speechSynthesis' in window && this.summary.length > 0;
+  }
+
+  /**
+   * Copy summary to clipboard
+   */
+  async copySummary(): Promise<void> {
+    if (!this.summary) return;
+
+    try {
+      const plainText = this.stripHtml(this.summary);
+      await navigator.clipboard.writeText(plainText);
+      this.displayToast('Summary copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy summary:', err);
+      this.displayToast('Failed to copy summary');
+    }
+  }
+
+  /**
+   * Copy transcript to clipboard
+   */
+  async copyTranscript(): Promise<void> {
+    if (!this.transcriptData?.transcript) return;
+
+    try {
+      const transcriptText = this.transcriptData.transcript
+        .map(item => `[${item.startTimeText}] ${item.text}`)
+        .join('\n');
+      await navigator.clipboard.writeText(transcriptText);
+      this.displayToast('Transcript copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy transcript:', err);
+      this.displayToast('Failed to copy transcript');
+    }
+  }
+
+  /**
+   * Display toast notification
+   */
+  private displayToast(message: string): void {
+    this.toastMessage = message;
+    this.showToast = true;
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      this.showToast = false;
+      this.cdr.detectChanges();
+    }, 3000);
   }
 }
