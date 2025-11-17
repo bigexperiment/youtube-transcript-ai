@@ -30,15 +30,31 @@
           autofocus
         />
         <small class="help-text">Get your API key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></small>
-        <button class="save-btn" (click)="saveInitialApiKey()">Save & Continue</button>
+        <button class="save-btn" (click)="saveInitialApiKey()">Next: Together.ai API Key →</button>
         <button class="skip-btn" (click)="skipStep()" *ngIf="promptStep === 2">← Back</button>
+      </div>
+
+      <!-- Step 3: Together.ai API Key -->
+      <div *ngIf="promptStep === 3">
+        <p>Finally, please enter your <strong>Together.ai API key</strong> for audio generation:</p>
+        <input 
+          type="text" 
+          [(ngModel)]="tempTogetherApiKey" 
+          placeholder="Enter your Together.ai API key"
+          class="api-key-input"
+          (keyup.enter)="saveInitialApiKey()"
+          autofocus
+        />
+        <small class="help-text">Get your API key from <a href="https://api.together.xyz/" target="_blank">Together.ai</a></small>
+        <button class="save-btn" (click)="saveInitialApiKey()">Save & Continue</button>
+        <button class="skip-btn" (click)="skipStep()" *ngIf="promptStep === 3">← Back</button>
       </div>
     </div>
   </div>
 
   <!-- Header -->
   <header class="app-header">
-    <h1>YouTube Transcript AI</h1>
+    <h1>YoutubeMagic</h1>
     <div class="header-actions">
       <div class="credits-display" *ngIf="creditsRemaining !== null">
         Credits: <span [class.zero-credits]="creditsRemaining === 0">{{ creditsRemaining }}</span>
@@ -120,20 +136,48 @@
 
     <!-- Results Section -->
     <div class="results-section" *ngIf="transcriptData || generatingSummary || summary">
+      <!-- Hidden Transcript Copy Button -->
+      <div class="transcript-copy-section" *ngIf="transcriptData && transcriptData.transcript && transcriptData.transcript.length > 0">
+        <button 
+          class="copy-btn-minimal"
+          (click)="copyTranscript()"
+          title="Copy transcript to clipboard"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+          </svg>
+          Copy Transcript
+        </button>
+      </div>
+
+      <!-- Summary Section -->
       <div class="summary-section" *ngIf="transcriptData || generatingSummary || summary">
         <div class="summary-header">
           <div class="headline-row">
             <h2 *ngIf="headline" class="headline">{{ headline }}</h2>
-            <button 
-              *ngIf="isSpeechAvailable() && !generatingSummary" 
-              class="speech-btn"
-              (click)="toggleSpeech()"
-              [title]="isSpeaking && !isPaused ? 'Pause reading' : isPaused ? 'Resume reading' : 'Read aloud'"
-            >
-              <span *ngIf="isSpeaking && !isPaused" class="speaking-icon">🔊</span>
-              <span *ngIf="isPaused" class="paused-icon">⏸️</span>
-              <span *ngIf="!isSpeaking && !isPaused" class="play-icon">🔈</span>
-            </button>
+            <div class="header-actions-row">
+              <button 
+                *ngIf="summary && !generatingSummary && !hasAudio && !generatingAudio" 
+                class="generate-audio-btn"
+                (click)="generateAudio()"
+                title="Generate audio from summary"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/>
+                </svg>
+                Generate Audio
+              </button>
+              <button 
+                *ngIf="summary && !generatingSummary" 
+                class="copy-btn-minimal"
+                (click)="copySummary()"
+                title="Copy summary to clipboard"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="summary-meta">
             <span class="style-badge">{{ summaryStyle === 'essay' ? 'Essay' : summaryStyle === 'bullets' ? 'Bullets' : 'Timestamp' }}</span>
@@ -141,15 +185,39 @@
             <span *ngIf="generatingSummary" class="generating-indicator">
               <span class="writing-animation">✍️</span> Writing...
             </span>
-            <span *ngIf="isSpeaking && !isPaused" class="speaking-indicator">
-              🔊 Reading aloud...
-            </span>
           </div>
         </div>
         <div class="summary-content" [class.writing]="generatingSummary">
           <span *ngIf="generatingSummary && !summary" class="placeholder-text">Generating summary with Gemini AI...</span>
           <div *ngIf="summary" class="summary-text" [innerHTML]="formatSummary(summary)"></div>
           <span *ngIf="!generatingSummary && !summary && transcriptData">No summary generated yet.</span>
+        </div>
+      </div>
+
+      <!-- Mini Audio Player -->
+      <div class="audio-player" *ngIf="summary && (generatingAudio || hasAudio)">
+        <div class="audio-player-content">
+          <button 
+            class="audio-play-btn"
+            (click)="toggleSpeech()"
+            [disabled]="generatingAudio"
+            [title]="generatingAudio ? 'Generating audio...' : isSpeaking && !isPaused ? 'Pause' : isPaused ? 'Resume' : 'Play'"
+          >
+            <span *ngIf="generatingAudio" class="spinner-tiny"></span>
+            <span *ngIf="!generatingAudio && isSpeaking && !isPaused" class="pause-icon">⏸</span>
+            <span *ngIf="!generatingAudio && isPaused" class="play-icon-small">▶</span>
+            <span *ngIf="!generatingAudio && !isSpeaking && !isPaused" class="play-icon-small">▶</span>
+          </button>
+          <div class="audio-info">
+            <div class="audio-time">
+              <span class="time-current">{{ formatTime(currentTime) }}</span>
+              <span class="time-separator">/</span>
+              <span class="time-total">{{ formatTime(duration) || '0:00' }}</span>
+            </div>
+            <div class="audio-progress-bar" (click)="seekAudio($event)">
+              <div class="audio-progress-fill" [style.width.%]="duration > 0 ? (currentTime / duration * 100) : 0"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,41 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CC0000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="playGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F0F0F0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background with rounded corners -->
+  <rect x="36" y="36" width="440" height="440" rx="100" fill="url(#bgGradient)"/>
+  
+  <!-- YouTube play button -->
+  <path d="M 200 180 L 200 332 L 320 256 Z" fill="url(#playGradient)"/>
+  
+  <!-- AI Sparkles/Magic elements with animation -->
+  <circle cx="170" cy="170" r="12" fill="#FFD700" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="350" cy="150" r="10" fill="#FFD700" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="150" cy="340" r="11" fill="#FFD700" opacity="0.85">
+    <animate attributeName="opacity" values="0.85;0.25;0.85" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="370" cy="360" r="8" fill="#FFD700" opacity="0.75">
+    <animate attributeName="opacity" values="0.75;0.15;0.75" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Sound waves / Transcript lines -->
+  <path d="M 100 400 Q 120 380, 140 400 T 180 400" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+  <path d="M 100 420 Q 120 400, 140 420 T 180 420" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+  <path d="M 100 440 Q 120 420, 140 440 T 180 440" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+  
+  <path d="M 332 400 Q 352 380, 372 400 T 412 400" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+  <path d="M 332 420 Q 352 400, 372 420 T 412 420" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+  <path d="M 332 440 Q 352 420, 372 440 T 412 440" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.8"/>
+</svg>

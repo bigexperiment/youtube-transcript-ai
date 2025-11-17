@@ -79,6 +79,16 @@
   font-size: 14px;
 }
 
+.api-key-input-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.api-key-input-wrapper .form-input {
+  flex: 1;
+}
+
 .form-input {
   padding: 10px;
   border: 1px solid #ddd;
@@ -86,11 +96,47 @@
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+  font-family: 'Courier New', monospace;
 }
 
 .form-input:focus {
   outline: none;
   border-color: #4CAF50;
+}
+
+.form-input[readonly] {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+
+.edit-btn,
+.cancel-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background: white;
+  color: #333;
+}
+
+.edit-btn:hover {
+  background-color: #f9fafb;
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.cancel-btn {
+  color: #666;
+}
+
+.cancel-btn:hover {
+  background-color: #fee;
+  border-color: #e74c3c;
+  color: #e74c3c;
 }
 
 .save-btn {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Storage } from './storage';
 
 export interface TranscriptItem {
@@ -79,5 +80,37 @@ export class Api {
       headers,
       params
     });
+  }
+
+  /**
+   * Generate audio using Together.ai API
+   */
+  generateAudio(text: string, voice: string = 'af_heart'): Observable<Blob> {
+    const apiKey = this.storage.getTogetherApiKey();
+    if (!apiKey) {
+      return throwError(() => new Error('Together.ai API key not found. Please set your API key in settings.'));
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      model: 'hexgrad/Kokoro-82M',
+      input: text,
+      voice: voice,
+      stream: false
+    };
+
+    return this.http.post('https://api.together.xyz/v1/audio/generations', body, {
+      headers,
+      responseType: 'blob'
+    }).pipe(
+      catchError((error) => {
+        console.error('Together.ai API error:', error);
+        return throwError(() => new Error('Failed to generate audio. Please try again.'));
+      })
+    );
   }
 }

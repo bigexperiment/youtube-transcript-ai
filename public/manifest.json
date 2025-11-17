@@ -1,18 +1,24 @@
 {
-  "name": "YouTube Transcript AI",
-  "short_name": "YT Transcript AI",
+  "name": "YoutubeMagic",
+  "short_name": "YoutubeMagic",
   "description": "AI-powered YouTube video transcript summarization tool",
-  "theme_color": "#667eea",
-  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "background_color": "#f8f9fa",
   "display": "standalone",
   "orientation": "portrait-primary",
   "scope": "/",
   "start_url": "/",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.svg",
       "sizes": "any",
-      "type": "image/x-icon",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]

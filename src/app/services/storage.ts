@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class Storage {
   private readonly API_KEY_STORAGE_KEY = 'scrape_creators_api_key';
   private readonly GEMINI_API_KEY_STORAGE_KEY = 'gemini_api_key';
+  private readonly TOGETHER_API_KEY_STORAGE_KEY = 'together_api_key';
   private readonly CREDITS_STORAGE_KEY = 'scrape_creators_credits';
   private readonly SUMMARY_STYLE_KEY = 'summary_style';
 
@@ -58,7 +59,7 @@ export class Storage {
   }
 
   hasAllApiKeys(): boolean {
-    return this.hasApiKey() && this.hasGeminiApiKey();
+    return this.hasApiKey() && this.hasGeminiApiKey() && this.hasTogetherApiKey();
   }
 
   getSummaryStyle(): string {
@@ -72,5 +73,22 @@ export class Storage {
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem(this.SUMMARY_STYLE_KEY, style);
     }
+  }
+
+  getTogetherApiKey(): string | null {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem(this.TOGETHER_API_KEY_STORAGE_KEY);
+    }
+    return null;
+  }
+
+  setTogetherApiKey(key: string): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(this.TOGETHER_API_KEY_STORAGE_KEY, key);
+    }
+  }
+
+  hasTogetherApiKey(): boolean {
+    return this.getTogetherApiKey() !== null;
   }
 }

@@ -1,0 +1,27 @@
+<svg width="32" height="32" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CC0000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle with rounded corners effect -->
+  <rect x="36" y="36" width="440" height="440" rx="100" fill="url(#bgGrad)"/>
+  
+  <!-- YouTube play button -->
+  <path d="M 200 180 L 200 332 L 320 256 Z" fill="#FFFFFF"/>
+  
+  <!-- AI Sparkles/Magic stars -->
+  <circle cx="170" cy="170" r="6" fill="#FFD700"/>
+  <circle cx="350" cy="150" r="5" fill="#FFD700"/>
+  <circle cx="150" cy="340" r="6" fill="#FFD700"/>
+  <circle cx="370" cy="360" r="4" fill="#FFD700"/>
+  
+  <!-- Sound waves / Transcript indicator -->
+  <path d="M 100 400 Q 120 380, 140 400 T 180 400" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.8"/>
+  <path d="M 100 420 Q 120 400, 140 420 T 180 420" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.8"/>
+  
+  <path d="M 332 400 Q 352 380, 372 400 T 412 400" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.8"/>
+  <path d="M 332 420 Q 352 400, 372 420 T 412 420" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.8"/>
+</svg>

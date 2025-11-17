@@ -8,25 +8,103 @@
     <div class="settings-body">
       <div class="form-group">
         <label for="apiKey">Scrape Creators API Key</label>
-        <input 
-          type="text" 
-          id="apiKey" 
-          [(ngModel)]="apiKey" 
-          placeholder="Enter your Scrape Creators API key"
-          class="form-input"
-        />
+        <div class="api-key-input-wrapper">
+          <input 
+            type="text" 
+            id="apiKey" 
+            [(ngModel)]="displayApiKey" 
+            [placeholder]="editingApiKey ? 'Enter your Scrape Creators API key' : 'Click to edit'"
+            [readonly]="!editingApiKey"
+            class="form-input"
+            (click)="!editingApiKey && startEditing('apiKey')"
+            (blur)="editingApiKey && saveApiKey()"
+            (keyup.enter)="editingApiKey && saveApiKey()"
+          />
+          <button 
+            *ngIf="!editingApiKey" 
+            class="edit-btn"
+            (click)="startEditing('apiKey')"
+            type="button"
+          >
+            Edit
+          </button>
+          <button 
+            *ngIf="editingApiKey" 
+            class="cancel-btn"
+            (click)="cancelEditing('apiKey')"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="geminiApiKey">Gemini AI API Key</label>
-        <input 
-          type="text" 
-          id="geminiApiKey" 
-          [(ngModel)]="geminiApiKey" 
-          placeholder="Enter your Gemini AI API key"
-          class="form-input"
-        />
+        <div class="api-key-input-wrapper">
+          <input 
+            type="text" 
+            id="geminiApiKey" 
+            [(ngModel)]="displayGeminiApiKey" 
+            [placeholder]="editingGeminiApiKey ? 'Enter your Gemini AI API key' : 'Click to edit'"
+            [readonly]="!editingGeminiApiKey"
+            class="form-input"
+            (click)="!editingGeminiApiKey && startEditing('geminiApiKey')"
+            (blur)="editingGeminiApiKey && saveGeminiApiKey()"
+            (keyup.enter)="editingGeminiApiKey && saveGeminiApiKey()"
+          />
+          <button 
+            *ngIf="!editingGeminiApiKey" 
+            class="edit-btn"
+            (click)="startEditing('geminiApiKey')"
+            type="button"
+          >
+            Edit
+          </button>
+          <button 
+            *ngIf="editingGeminiApiKey" 
+            class="cancel-btn"
+            (click)="cancelEditing('geminiApiKey')"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
         <small class="help-text">Get your API key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></small>
+      </div>
+
+      <div class="form-group">
+        <label for="togetherApiKey">Together.ai API Key</label>
+        <div class="api-key-input-wrapper">
+          <input 
+            type="text" 
+            id="togetherApiKey" 
+            [(ngModel)]="displayTogetherApiKey" 
+            [placeholder]="editingTogetherApiKey ? 'Enter your Together.ai API key' : 'Click to edit'"
+            [readonly]="!editingTogetherApiKey"
+            class="form-input"
+            (click)="!editingTogetherApiKey && startEditing('togetherApiKey')"
+            (blur)="editingTogetherApiKey && saveTogetherApiKey()"
+            (keyup.enter)="editingTogetherApiKey && saveTogetherApiKey()"
+          />
+          <button 
+            *ngIf="!editingTogetherApiKey" 
+            class="edit-btn"
+            (click)="startEditing('togetherApiKey')"
+            type="button"
+          >
+            Edit
+          </button>
+          <button 
+            *ngIf="editingTogetherApiKey" 
+            class="cancel-btn"
+            (click)="cancelEditing('togetherApiKey')"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+        <small class="help-text">Get your API key from <a href="https://api.together.xyz/" target="_blank">Together.ai</a></small>
       </div>
 
       <button class="save-btn" (click)="saveAllKeys()">Save All Keys</button>
